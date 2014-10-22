@@ -1,4 +1,9 @@
 {
+    "name": "jonas/silex-webservice",
+    "description": "A minimal Silex webservice skeleton",
+    "license": "MIT",
+    "type": "project",
+
     "require": {
         "silex/silex": "~1.2"
     }
