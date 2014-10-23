@@ -34,4 +34,4 @@ Dojo setup
     git pull origin dojo-step2
     git checkout dojo-step2 -- composer.json
     git checkout dojo-step2 -- phpunit.xml.dist
-    git checkout dojo-step2 -- tests/  
+    git checkout dojo-step2 -- tests/
