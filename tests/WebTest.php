@@ -10,7 +10,7 @@ class WebTest extends WebTestCase
 {
     public function createApplication()
     {
-        $app =  require __DIR__.'/../src/app.php';
+        $app = require __DIR__.'/../src/app.php';
 
         //If your application use sessions, set session.test to true to simulate sessions:
         //$app['session.test'] = true;
@@ -19,42 +19,35 @@ class WebTest extends WebTestCase
         return $app;
     }
 
-    public function testInitialPageStatusCodeIs200()
-    {
-        $client = $this->createClient();
-        $client->request('GET', '/');
+    public function testIndexStatusCodeIs200(){
 
+        $client = $this->createClient();
+        $client->request("GET", "/");
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function testInitialPageReturnsJSON()
-    {
-        $client = $this->createClient();
-        $client->request('GET', '/');
+    public function testIndexReturnsJSON(){
 
-        $this->assertTrue($client->getResponse()->headers->contains('Content-Type','application/json'));
+        $client = $this->createClient();
+        $client->request("GET", "/");
+
+        $this->assertEquals("application/json", $client->getResponse()->headers->get("Content-Type"));
     }
 
-    public function testInitialPageContainsHello()
-    {
-        $client = $this->createClient();
-        $client->request('GET', '/');
+    public function testIndexSaysHelloInJSON(){
 
-        $this->assertContains('hello', $client->getResponse()->getContent());
+        $client = $this->createClient();
+        $client->request("GET", "/");
+
+        $this->assertEquals(json_encode(array("hello" => "world")),
+                            $client->getResponse()->getContent());
     }
+    public function testReturnPreviouslyPosted(){
 
-    public function testInitialPageReturnExeptectedJSON()
-    {
         $client = $this->createClient();
-        $client->request('GET', '/');
-
-        $this->assertEquals('{"hello":"world"}', $client->getResponse()->getContent());
-    }
-
-    public function testInitialPageReturnValidJSON()
-    {
-        $client = $this->createClient();
-        $client->request('GET', '/');
-        $this->assertJson($client->getResponse()->getContent());
+        $client->request("POST", "/", array(), array(), array(), json_encode(array("toto"=>"titi")));
+        $client->request("GET", "/");
+        $this->assertEquals(json_encode(array("toto"=>"titi")),
+            $client->getResponse()->getContent());
     }
 }
